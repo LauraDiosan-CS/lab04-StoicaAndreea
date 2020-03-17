@@ -1,7 +1,7 @@
 ﻿# lab04-StoicaAndreea
 lab04-StoicaAndreea created by GitHub Classroom
 
-initial project
+Initial project
 
 314/1
 

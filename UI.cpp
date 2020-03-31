@@ -2,7 +2,11 @@
 #include <iostream>
 using namespace std;
 
-void addProj(ServiceArray& s) {
+UI::UI(ServiceArray& service)
+{
+	s = service;
+}
+void UI::addProj() {
 	Project proj;
 	cout << "Give the Project:";
 	cin >> proj;
@@ -11,57 +15,77 @@ void addProj(ServiceArray& s) {
 }
 
 
-void findProj(ServiceArray& serv) {
+void UI::findProj() {
 	Project proj;
 	cout << "Give the Project:";
 	cin >> proj;
-	int rez = serv.findOne(proj);
+	int rez = s.findOne(proj);
 	if (rez>=0) cout << "The Project has been found!" << endl;
 	else cout << "The Project has not been found!" << endl;
 }
 
-void delProj(ServiceArray& serv) {
+void UI::delProj() {
 	Project proj;
 	cout << "Give the Project:" << endl;;
 	cin >> proj;
-	int rez = serv.delProject(proj);
+	int rez = s.delProject(proj);
 	if (rez == 0) cout << "Projectul a fost  sters cu succes!" << endl;
 	else cout << "Projectul NU a fost sters!" << endl;
 }
 
-void showAll(ServiceArray& serv) {
+void UI::showAll() {
 	//Project* proj = serv.getAll();
-	for (int i = 0; i < serv.getSize(); i++)
-		cout << serv.getItemFromPos(i).getGitPath()<<" "<< serv.getItemFromPos(i).getNoOfBranches()<<" "<< serv.getItemFromPos(i).getTotalNoOfCommits()<< endl;
+	for (int i = 0; i < s.getSize(); i++)
+		cout << s.getItemFromPos(i).getGitPath()<<" "<< s.getItemFromPos(i).getNoOfBranches()<<" "<< s.getItemFromPos(i).getTotalNoOfCommits()<< endl;
 }
 
-/*
-void showAlphabeticallySorted(Service& serv) {
-	vector<Project> proj = serv.sortByName();
-	for (Project s : proj)
-		cout << s;
+void UI::undoProj(){
+	int rez = s.undoList();
+	if (rez == 0) cout << "The undo was successfull!" << endl;
+	else cout << "can't undo" << endl;
 }
-void showAgeSorted(Service& serv) {
-	vector<Project> proj = serv.sortByAge();
-	for (Project s : proj)
-		cout << s;
+void UI::updateProj() {
+	Project proj;
+	cout << "Give the Project you want to update:";
+	cin >> proj;
+	cout << "Give the Project data:" << endl;
+	char* gp = new char[10];	
+	int b;
+	int c;
+	int rez = s.findOne(proj);
+	if (rez >= 0) {
+		cout << "path: ";
+		cin >> gp;
+		cout << "branches: ";
+		cin >> b;
+		cout << "commits: ";
+		cin >> c;
+		s.updateProject(proj, gp, b, c);
+		cout << "The project has been updated!";
+	}
+	else { cout << "The project has not been found!"; }
+}
+void UI::showFilteredProjects() {
+	int b;
+	int c;
+	cout << "Branches: ";
+	cin >> b;
+	cout << "Commits:";
+	cin >> c;
+	Project projFilter[100];
+	int m=0;
+	s.filterProjects(b,c,projFilter, m);
+	for (int i = 0; i < m; i++)
+	{
+		cout << projFilter[i] << endl;
+	}
+}
+void UI::deleteProjectsWithBC()
+{
+	s.deleteProjectsWithCommitsAndBranchesArray();
 }
 
-void showFilteredProjects(Service& serv) {
-	char* n = new char[10];
-	int v;
-	cout << "Dati subsirul cautat in nume: ";
-	cin >> n;
-	cout << "Dati limita de varsta:";
-	cin >> v;
-
-	vector<Project> proj = serv.filterByNameAndAge(n, v);
-	for (Project s : proj)
-		cout << s;
-	delete[] n;
-}*/
-
-void showUI(ServiceArray& serv)
+void UI::showUI()
 {
 	bool gata = false;
 	while (!gata) {
@@ -70,24 +94,30 @@ void showUI(ServiceArray& serv)
 		cout << "	1. Add Project " << endl;
 		cout << "	2. Search Project " << endl;
 		cout << "	3. Delete Project " << endl;
-		cout << "	4. Show Projects " << endl;
-		//cout << "	5. Afiseaza Projectii ordonati alfabetic " << endl;
-		//cout << "	6. Afiseaza Projectii ordonati descrescator dupa varsta " << endl;
-		//cout << "	7. Filtreaza Projectii dupa nume si varsta " << endl;
+		cout << "	4. Update Project " << endl;
+		cout << "	5. Show Projects " << endl;
+		cout << "	6. DeleteProjects with branches and commits =0 " << endl;
+		cout << "	7. Filter Projects after branches and commits " << endl;
+		cout << "	8. UNDO" << endl;
 		cout << "	0. EXIT!" << endl;
-		cout << "option: (number):  ";
+		cout << "option: (give the number):  ";
 		int opt;
 		cin >> opt;
 		cout <<endl;
 		switch (opt) {
-		case 1: {addProj(serv); break; }
-		case 2: {findProj(serv); break; }
-		case 3: {delProj(serv); break; }
-		case 4: {showAll(serv); break; }
-			  //case 5: {showAlphabeticallySorted(serv); break; }
-			  //case 6: {showAgeSorted(serv); break; }
-			  //case 7: {showFilteredProjects(serv); break; }
+		case 1: {addProj(); break; }
+		case 2: {findProj(); break; }
+		case 3: {delProj(); break; }
+		case 4: {updateProj(); break; }
+		case 5: {showAll(); break; }
+		case 6: {deleteProjectsWithBC(); break; }
+		case 7: {showFilteredProjects(); break; }
+		case 8: {undoProj(); break; }
 		case 0: {gata = true; cout << "BYE BYE..." << endl; }
 		}
 	}
+}
+UI::~UI()
+{
+
 }

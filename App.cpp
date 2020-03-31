@@ -15,15 +15,16 @@ int main() {
 	tes.testServiceArray();
 	cout << "succes" << endl;
 	RepositoryArray repo;
-	ServiceArray serv(repo);
 	Project p1("aaa", 1, 1);
 	Project p2("bbb", 2, 2);
 	Project p3("ccc", 3, 0);
 	Project p4("ddd", 2, 2);
-	serv.addProject(p1);
-	serv.addProject(p2);
-	serv.addProject(p3);
-	serv.addProject(p4);
-	showUI(serv);
+	repo.addElem(p1);
+	repo.addElem(p2);
+	repo.addElem(p3);
+	repo.addElem(p4);
+	ServiceArray serv(repo);
+	UI ui(serv);
+	ui.showUI();
 	return 0;
 }

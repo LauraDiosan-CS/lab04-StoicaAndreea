@@ -85,6 +85,13 @@ void Tests::testServiceArray() {
 	assert(n == 0);
 	serv.updateProject(p1, "aaa", 1, 1);
 	assert(strcmp(serv.getItemFromPos(0).getGitPath(), "aaa") == 0);
+	serv.undoList();
+	assert(strcmp(serv.getItemFromPos(0).getGitPath(), "Ana") == 0);
+	serv.undoList();
+	assert(serv.findOne(p) == 4);
+	serv.deleteProjectsWithCommitsAndBranchesArray();
+	assert(serv.findOne(p3) == -1);
+
 }
 
 Tests::~Tests() {

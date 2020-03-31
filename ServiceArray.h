@@ -7,6 +7,8 @@ class ServiceArray
 {
 private:
 	RepositoryArray repo;
+	RepositoryArray undo[100];
+	int size = 0;
 public:
 	ServiceArray();
 	ServiceArray(const RepositoryArray&);
@@ -20,9 +22,7 @@ public:
 	Project getItemFromPos(int);
 	int getSize();
 	void deleteProjectsWithCommitsAndBranchesArray();
-	//Project* sortByGitPath();
-	//Project* sortByTotalNoOfCommits();
-	//Project* filterByPathAndCommits(const char* n, int a);
+	int undoList();
 	~ServiceArray();
 };
 
